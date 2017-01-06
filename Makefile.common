@@ -8,6 +8,7 @@
 #     DEFS
 #         this environment variable will be passed to the Makefile in DIRS.
 #     OBJS
+#     TEST_OBJS
 #     RMFILES
 #
 # you must include this Makefile.common immediately after definition
@@ -39,7 +40,7 @@ CPPFLAGS += -I.
 CPPFLAGS += -I/usr/local/include
 
 CFLAGS += -Werror -Wall
-CFLAGS += -g
+#CFLAGS += -g
 #CFLAGS += -std=c99
 
 LDFLAGS	+= -L/usr/local/lib
@@ -53,11 +54,19 @@ endif
 
 $(TARGETS): $(OBJS)
 
+$(TEST_TARGETS): $(TEST_OBJS)
+
 #
 #.SUFFIXES: .o .c
 #
 #.c.o:
 #	$(CC) $(CFLAGS) -c $<
+
+lib$(BASENAME).a: $(OBJS)
+	ar rv $@ $^
+
+lib$(BASENAME).so: $(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $^ $(LDFLAGS) $(LDLIBS)
 
 clean:
 	-rm -rf a.out *.dSYM *.o

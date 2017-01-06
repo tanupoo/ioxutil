@@ -10,7 +10,7 @@
 #include <string.h>
 #include <err.h>
 
-//static int f_debug = 0;
+#include "tini/tini.h"
 
 static struct tini_base *ioxutil_config_base = NULL;
 
@@ -71,7 +71,6 @@ ioxutil_set_logfile(char *file)
 }
 
 /*
- * "spark", "server_url", &g_server_url, NULL);
  */
 int
 ioxutil_config_get(char *section, char *key, char **dest, char *init)
@@ -89,21 +88,21 @@ ioxutil_config_get(char *section, char *key, char **dest, char *init)
 }
 
 /*
- * "spark", "frequency", &g_frequency, 60);
  */
 int
 ioxutil_config_getint(char *sect, char *key, int *dest, int init)
 {
-	char tmp[128];
-	if (ioxutil_config_get(section, key, *tmp, "") < 0)
-		return -1;
+	char *tmp;
+	char *bp;
 
-	if (tmp[0] == '\0') {
+	if (ioxutil_config_get(sect, key, &tmp, "") < 0)
+		return -1;
+	if (tmp == '\0') {
 		*dest = init;
 		return 0;
 	}
 
-	*dest = strtol(tmp, &bp, 10);
+	*dest = (int)strtol(tmp, &bp, 10);
 	if (*bp == '\0')
 		return -1;
 
@@ -115,7 +114,6 @@ ioxutil_config_load(void)
 {
 	char *path;
 	int path_len = 1024;
-	int len;
 
 	if ((path = malloc(path_len)) == NULL)
 		err(1, "ERROR: malloc(conf_file)");
@@ -123,8 +121,7 @@ ioxutil_config_load(void)
 	snprintf(path, path_len, "%s/%s",
 			g_CAF_APP_PATH, g_CAF_APP_CONFIG_FILE);
 
-	tini_parse_cb(path, ioxutil_config_handler);
-	if (tini_parse(path, ioxutil_config_base) < 0)
+	if (tini_parse(path, &ioxutil_config_base) < 0)
 		err(1, "ERROR: failed to load %s", path);
 
 	return 0;

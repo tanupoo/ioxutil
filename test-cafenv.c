@@ -10,7 +10,7 @@
 #include <string.h>
 #include <err.h>
 
-#include "cafenv.h"
+#include "ioxutil.h"
 
 int f_debug = 0;
 
@@ -36,11 +36,18 @@ run()
 
 	ioxutil_init();
 	ioxutil_cafenv_dump();
+
+	printf("---\n");
 	ioxutil_config_load();
 	ioxutil_config_get("spark", "server_url", &g_server_url, NULL);
 	ioxutil_config_get("spark", "auth_key", &g_auth_key, NULL);
 	ioxutil_config_get("spark", "room_id", &g_room_id, NULL);
 	ioxutil_config_getint("spark", "frequency", &g_frequency, 60);
+
+	printf("server_url = %s\n", g_server_url);
+	printf("auth_key = %s\n", g_auth_key);
+	printf("room_id = %s\n", g_room_id);
+	printf("frequency = %d\n", g_frequency);
 
 	return 0;
 }
