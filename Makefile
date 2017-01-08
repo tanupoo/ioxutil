@@ -10,7 +10,8 @@ endif
 
 LDLIBS  = -lioxutil
 
-TEST_TARGETS = test-cafenv lib$(BASENAME).a
+TEST_TARGETS = test-cafenv
+TEST_OBJS = lib$(BASENAME).a
 
 DIRS=tini
 

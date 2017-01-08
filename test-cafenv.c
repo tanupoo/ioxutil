@@ -33,6 +33,7 @@ run()
 	char *g_auth_key;
 	char *g_room_id;
 	int g_frequency;
+	int g_verify_cert;
 
 	ioxutil_init();
 	ioxutil_cafenv_dump();
@@ -40,11 +41,13 @@ run()
 	printf("---\n");
 	ioxutil_config_load();
 	ioxutil_config_get("spark", "server_url", &g_server_url, NULL);
+	ioxutil_config_getbool("spark", "verify_cert", &g_verify_cert, 1);
 	ioxutil_config_get("spark", "auth_key", &g_auth_key, NULL);
 	ioxutil_config_get("spark", "room_id", &g_room_id, NULL);
 	ioxutil_config_getint("spark", "frequency", &g_frequency, 60);
 
 	printf("server_url = %s\n", g_server_url);
+	printf("verify_cert = %s\n", g_verify_cert ? "TRUE" : "FALSE");
 	printf("auth_key = %s\n", g_auth_key);
 	printf("room_id = %s\n", g_room_id);
 	printf("frequency = %d\n", g_frequency);

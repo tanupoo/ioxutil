@@ -109,6 +109,35 @@ ioxutil_config_getint(char *sect, char *key, int *dest, int init)
 	return 0;
 }
 
+/*
+ * if the value is "true", set 1 to *dest,
+ * if the value is "false", set 0 to *dest,
+ * otherwise 0.
+ * the value is compared with case *insensitively*.
+ */
+int
+ioxutil_config_getbool(char *sect, char *key, int *dest, int init)
+{
+	char *tmp;
+
+	if (ioxutil_config_get(sect, key, &tmp, "") < 0)
+		return -1;
+	if (tmp == '\0') {
+		*dest = init;
+		return 0;
+	}
+
+	if (strcasecmp(tmp, "true") == 0) {
+		*dest = 1;
+	} else
+	if (strcasecmp(tmp, "false") == 0) {
+		*dest = 0;
+	} else
+		return -1;
+
+	return 0;
+}
+
 int
 ioxutil_config_load(void)
 {
