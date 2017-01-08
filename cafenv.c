@@ -19,8 +19,7 @@ static struct tini_base *ioxutil_config_base = NULL;
 #define IOXUTIL_CAFENV_GET(name) { \
 	g_##name = getenv(#name); \
 	if (g_##name == NULL) { \
-		printf("ERROR: %s is not defined.\n", #name); \
-		return -1; \
+		printf("INFO: %s is not defined.\n", #name); \
 	} \
 }
 
